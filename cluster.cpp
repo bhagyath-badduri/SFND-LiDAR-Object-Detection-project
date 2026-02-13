@@ -1,4 +1,4 @@
-/* \author Aaron Brown */
+
 // Quiz on implementing euclidean clustering with kd-tree
 
 #include "../../render/render.h"
