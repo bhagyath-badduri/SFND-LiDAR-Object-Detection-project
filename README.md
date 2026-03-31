@@ -8,7 +8,7 @@ This project represents a core component of a **perception and sensor fusion pip
 
 ---
 
-## 🎥 Demo – LiDAR Obstacle Detection
+## Demo – LiDAR Obstacle Detection
 
 ![LiDAR Obstacle Detection](lidar_obstacle_detection.gif)
 
@@ -16,7 +16,7 @@ The demo shows a city-block scenario where LiDAR data is processed in real time 
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 In autonomous systems, LiDAR provides precise 3D spatial information but requires processing to extract meaningful structure.
 
@@ -46,7 +46,7 @@ The obstacle detection output can be integrated with:
 
 ---
 
-## 🧠 Technical Approach
+## Technical Approach
 
 The pipeline consists of the following stages:
 
@@ -141,7 +141,7 @@ This project demonstrates practical understanding of:
 
 ---
 
-## 🧰 Tools and Environment
+## Tools and Environment
 
 - **C++**
 - **Point Cloud Library (PCL)**
