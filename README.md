@@ -1,10 +1,10 @@
-# LiDAR 3D Obstacle Detection – Point Cloud Processing
+# LiDAR 3D Obstacle Detection – Point Cloud Processing Pipeline
 
-This repository contains a **C++ implementation of a LiDAR-based 3D obstacle detection pipeline** developed using the **Point Cloud Library (PCL)**. The project processes raw LiDAR point cloud data to detect and visualize obstacles in a simulated urban driving environment.
+This repository implements a complete **LiDAR-based 3D obstacle detection pipeline** using C++ and the **Point Cloud Library (PCL)**.
 
-The system demonstrates core **3D perception techniques** used in **autonomous driving**, **robotics**, and **environment understanding**, with key algorithms implemented from scratch.
+The system processes raw LiDAR point cloud data to **segment the ground plane, detect obstacles, and generate 3D bounding boxes** in a simulated urban driving environment.
 
-**Author:** Bhagyath Badduri
+This project represents a core component of a **perception and sensor fusion pipeline** used in autonomous driving and robotics for environment understanding.
 
 ---
 
@@ -12,60 +12,140 @@ The system demonstrates core **3D perception techniques** used in **autonomous d
 
 ![LiDAR Obstacle Detection](lidar_obstacle_detection.gif)
 
+The demo shows a city-block scenario where LiDAR data is processed in real time to detect obstacles such as vehicles and objects on the road.
+
 ---
 
 ## 📌 Project Overview
 
-- End-to-end **LiDAR perception pipeline**
-- Real-time obstacle detection in a city-block simulation
-- Ground plane separation and obstacle segmentation
-- 3D bounding box visualization for detected objects
-- Custom implementations of core perception algorithms
+In autonomous systems, LiDAR provides precise 3D spatial information but requires processing to extract meaningful structure.
+
+This project implements an end-to-end perception pipeline that:
+
+- processes raw LiDAR point clouds
+- separates ground from obstacles
+- groups obstacle points into clusters
+- estimates object boundaries using 3D bounding boxes
+- visualizes results in real time
+
+---
+
+## Sensor Fusion Context
+
+This project is part of a broader **sensor fusion and perception stack**, where LiDAR is used to:
+
+- provide accurate 3D geometry of the environment  
+- complement camera-based perception  
+- enable object detection independent of lighting conditions  
+
+The obstacle detection output can be integrated with:
+
+- tracking systems (e.g., Kalman Filter / UKF)
+- camera-based object detection
+- motion prediction modules
 
 ---
 
 ## 🧠 Technical Approach
 
-**Point Cloud Processing**
-- Voxel grid filtering to downsample raw point clouds
-- Region of interest cropping to remove irrelevant data
-
-**Segmentation**
-- Ground plane extraction using a **custom RANSAC algorithm**
-- Separation of road surface and obstacle points
-
-**Clustering**
-- **KD-tree–based Euclidean clustering** for obstacle grouping
-- Individual cluster extraction for detected objects
-
-**Visualization**
-- Axis-aligned **3D bounding boxes**
-- Real-time visualization using **PCL Visualizer**
+The pipeline consists of the following stages:
 
 ---
 
-## 🛠️ Technologies Used
+### 1️⃣ Point Cloud Filtering
 
-- C++
-- Point Cloud Library (PCL)
-- Eigen
-- CMake
+Raw LiDAR data is first preprocessed to reduce noise and computational cost.
+
+- **Voxel Grid Filtering**  
+  Downsamples the point cloud by grouping points into voxels and replacing them with centroids.
+
+- **Region of Interest (ROI) Cropping**  
+  Removes points outside the relevant driving area to focus on useful data.
+
+---
+
+### 2️⃣ Ground Plane Segmentation
+
+The road surface is separated from obstacles using a **custom RANSAC algorithm**.
+
+- Random samples are selected to estimate a plane model
+- Points close to the plane are classified as ground
+- Remaining points are treated as obstacles
+
+👉 This step is critical for isolating objects above the road surface.
+
+---
+
+### 3️⃣ Obstacle Clustering
+
+Obstacle points are grouped into individual objects using:
+
+- **KD-tree for efficient nearest-neighbor search**
+- **Euclidean clustering algorithm**
+
+Each cluster corresponds to a potential obstacle such as a vehicle or object.
+
+---
+
+### 4️⃣ Bounding Box Estimation
+
+For each detected cluster:
+
+- Axis-aligned **3D bounding boxes** are generated
+- Bounding boxes represent object size and position
+
+This allows downstream systems to:
+
+- estimate object dimensions
+- perform tracking
+- assess collision risk
+
+---
+
+### 5️⃣ Visualization
+
+The processed results are visualized using **PCL Visualizer**:
+
+- Ground plane and obstacles are color-coded
+- Clusters are displayed individually
+- Bounding boxes highlight detected objects
+
+---
+
+## Results
+
+The system successfully detects and localizes obstacles in a simulated urban environment.
+
+### Key observations:
+
+- Ground plane segmentation effectively removes road points  
+- Clustering accurately groups object points  
+- Bounding boxes provide clear spatial representation of obstacles  
+- Filtering significantly reduces noise and improves stability  
+
+This demonstrates the effectiveness of classical LiDAR processing pipelines for real-time perception.
+
+---
+
+## What This Project Demonstrates
+
+This project demonstrates practical understanding of:
+
+- LiDAR point cloud processing  
+- 3D environment perception  
+- RANSAC-based plane fitting  
+- KD-tree and spatial search  
+- Euclidean clustering  
+- Real-time obstacle detection  
+- 3D bounding box estimation  
+
+---
+
+## 🧰 Tools and Environment
+
+- **C++**
+- **Point Cloud Library (PCL)**
+- **Eigen**
+- **CMake**
 - LiDAR point cloud data (PCD files)
 
----
-
-## Build & Run
-
-**Requirements**
-- C++11 or later  
-- CMake ≥ 3.5  
-- PCL (Point Cloud Library)  
-- Eigen  
-
-**Build and Execute**
-```bash
-mkdir build
-cd build
-cmake ..
-make
-./environment
